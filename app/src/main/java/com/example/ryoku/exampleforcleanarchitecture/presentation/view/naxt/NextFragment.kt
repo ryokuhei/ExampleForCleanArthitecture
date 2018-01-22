@@ -1,80 +1,97 @@
 package com.example.ryoku.exampleforcleanarchitecture.presentation.view.naxt
 
-import android.app.Fragment
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import com.example.ryoku.exampleforcleanarchitecture.R
 import com.example.ryoku.exampleforcleanarchitecture.domain.model.User
-import com.example.ryoku.exampleforcleanarchitecture.domain.use_case.GetUserUseCase
 import com.example.ryoku.exampleforcleanarchitecture.presentation.presenter.NextPresenter
 import com.example.ryoku.exampleforcleanarchitecture.presentation.view.BaseFragment
-import kotlinx.android.synthetic.main.fragment_next.view.*
+import com.example.ryoku.exampleforcleanarchitecture.presentation.view.main.MainActivity
 
 /**
  * Created by ryoku on 2018/01/17.
  */
-class NextFragment: BaseFragment(), NextFragmentDelegate {
+class NextFragment: BaseFragment(), NextFragmentDelegate, View.OnClickListener {
 
     lateinit var bundle: Bundle
 
-    lateinit var name: TextView
-    lateinit var age: TextView
+    var id: Int? = null
 
-    lateinit var presenter: NextPresenter
+    lateinit var nameTV: TextView
+    lateinit var ageTV: TextView
+
+    val presenter: NextPresenter = NextPresenter()
 
     companion object {
+        val USER_ID = "id"
         fun createInstanse(id: Int): NextFragment {
+            Log.d("NextFragment-ID","${id.toString()}")
             val bundle = Bundle()
-            bundle.putInt("id", id)
+            bundle.putInt(USER_ID, id)
 
             val nextFragment = NextFragment()
-            nextFragment.bundle = bundle
+            nextFragment.arguments = bundle
 
             return nextFragment
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-
-
+        return inflater?.inflate(R.layout.fragment_next, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view?.apply {
-            name = this.findViewById<TextView>(R.id.name_next) as TextView
-            age  = this.findViewById<TextView>(R.id.age_next) as TextView
-        }
-//        name = view?.findViewById<TextView>(R.id.name_next) as TextView
-//        age  = view?.findViewById<TextView>(R.id.age_next) as TextView
+         view?.apply {
+            nameTV = this.findViewById<TextView>(R.id.name_tv) as TextView
+            ageTV  = this.findViewById<TextView>(R.id.age_tv) as TextView
 
-        val id = savedInstanceState?.getInt("id")
+        }
+
+
+        view?.findViewById<Button>(R.id.register_button)?.setOnClickListener(this)
+
+        val bundle: Bundle = arguments
+        id = bundle.getInt(USER_ID)
+
+        Log.d("id","${id.toString()}")
 
 
         var user: User?
         id?.let {
-            presenter = NextPresenter()
             presenter.delegate = this
 
             user = presenter.getUserData(it)
 
-            name.setText(user?.name ?: "")
-            age.setText(Integer.toString(user?.age!!) ?: "")
+            val name = "${user?.firstName} ${user?.lastName}"
+            Log.d("firstName","${user?.firstName}")
+            Log.d("Name","${name}")
+            nameTV.text=name
+            ageTV.text=Integer.toString(user?.age!!) ?: ""
         }
-
-
-
 
     }
 
     override fun showUser(user: User) {
-        this.name.setText(user.name)
-        this.age.setText(user.age)
+        val name = user?.firstName + user?.lastName
+        this.nameTV.setText(name)
+        this.ageTV.setText(user.age.toString())
+    }
+
+    override fun onClick(view: View?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

@@ -9,7 +9,6 @@ import com.example.ryoku.exampleforcleanarchitecture.domain.model.User
 class UserTranslator: BaseTranslator() {
 
     fun translate(userEntity: UserEntity): User {
-        val name = userEntity.firstName + "" + userEntity.lastName
-        return User(name, userEntity.age)
+        return User(userEntity.firstName, userEntity.lastName, userEntity.age)
     }
 }

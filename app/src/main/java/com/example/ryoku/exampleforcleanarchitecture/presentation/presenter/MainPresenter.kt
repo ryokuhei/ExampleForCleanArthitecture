@@ -1,7 +1,10 @@
 package com.example.ryoku.exampleforcleanarchitecture.presentation.presenter
 
 import com.example.ryoku.exampleforcleanarchitecture.domain.model.User
+import com.example.ryoku.exampleforcleanarchitecture.domain.use_case.GetUserIdUseCase
+import com.example.ryoku.exampleforcleanarchitecture.domain.use_case.GetUserUseCase
 import com.example.ryoku.exampleforcleanarchitecture.domain.use_case.RegisterUserUseCase
+import com.example.ryoku.exampleforcleanarchitecture.domain.use_case.SearchUserUseCase
 import com.example.ryoku.exampleforcleanarchitecture.presentation.view.main.MainFragmentDelegate
 
 /**
@@ -10,15 +13,21 @@ import com.example.ryoku.exampleforcleanarchitecture.presentation.view.main.Main
 class MainPresenter: BasePresenter() {
 
     lateinit var delegate: MainFragmentDelegate
-    lateinit var registerUser: RegisterUserUseCase
 
     fun register(user: User) {
 
-        registerUser = RegisterUserUseCase()
+        val registerUser = RegisterUserUseCase()
         val result = registerUser.invoke(user)
 
+        var id: Int? = null
+
         if (result) {
-            delegate.gotoNextActivity()
+            val getUserIdUseCase = GetUserIdUseCase()
+            id = getUserIdUseCase.invoke(user)
+        }
+
+        if(id != null) {
+            delegate.gotoNextActivity(id)
         } else {
             delegate.showErrorMessage("db_error")
         }

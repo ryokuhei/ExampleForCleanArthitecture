@@ -14,7 +14,6 @@ class NextPresenter: BasePresenter() {
 
     fun getUserData(id: Int): User? {
 
-
         val getUserUseCase = GetUserUseCase()
         val user = getUserUseCase.invoke(id)
 

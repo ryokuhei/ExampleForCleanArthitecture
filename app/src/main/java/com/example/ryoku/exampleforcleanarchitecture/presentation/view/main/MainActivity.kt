@@ -4,17 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.util.Log
 import com.example.ryoku.exampleforcleanarchitecture.R
-import com.example.ryoku.exampleforcleanarchitecture.presentation.view.main.MainFragment
+import com.example.ryoku.exampleforcleanarchitecture.presentation.view.naxt.NextActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainActivityDelegate {
 
     companion object {
+        val USER_ID = "id"
+
         fun createIntent(context: Context): Intent {
-            Log.d("mainActivity","instantiate")
-            print("companion topActivity")
             return Intent(context, MainActivity::class.java)
         }
     }
@@ -23,18 +21,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d("mainActivity","onCreate")
-
-        print("onCreate at mainActivity")
-
         if(savedInstanceState == null) {
             val mainFragment = MainFragment.createInstanse()
+            mainFragment.delegate = this
             supportFragmentManager
                     .beginTransaction()
-                    .add(R.id.container, mainFragment)
-//                .add(R.id.container, Fragment())
+                    .add(R.id.main_fl, mainFragment)
                     .commit()
         }
 
     }
+
+    // result create success
+    override fun gotoNextActivity(id: Int) {
+        val intent = NextActivity.createIntent(this, id)
+        intent.putExtra(USER_ID, id)
+        startActivity(intent)
+    }
+}
+
+interface MainActivityDelegate {
+    fun gotoNextActivity(id: Int)
 }

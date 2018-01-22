@@ -1,25 +1,22 @@
 package com.example.ryoku.exampleforcleanarchitecture.domain.use_case
 
-import android.util.Log
 import com.example.ryoku.exampleforcleanarchitecture.domain.model.User
 import com.example.ryoku.exampleforcleanarchitecture.domain.repository.UserRepository
 import com.example.ryoku.exampleforcleanarchitecture.domain.translator.UserTranslator
 
 /**
- * Created by ryoku on 2018/01/18.
+ * Created by ryoku on 2018/01/22.
  */
-class GetUserUseCase: BaseUseCase() {
+class SearchUserUseCase: BaseUseCase() {
 
-    fun invoke(id: Int): User? {
-
+    fun invoke(searchWord: User): User? {
         var user: User? = null
 
         val userRepository = UserRepository()
         val userTranslator = UserTranslator()
 
-        val userEntity = userRepository.getUser(id)
-
-        userEntity?.let {
+        val userEntityList = userRepository.searchUserList(searchWord)
+        userEntityList[0].let {
             user = userTranslator.translate(it)
         }
 

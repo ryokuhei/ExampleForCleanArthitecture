@@ -9,7 +9,7 @@ import com.example.ryoku.exampleforcleanarchitecture.domain.model.User
  */
 class UserRepository: BaseRepository() {
 
-    lateinit var dataStore: UserDataStore
+    var dataStore: UserDataStore = TestDataStore()
 
     fun createUser(user: User): Boolean {
         return dataStore.insert(user)
@@ -18,4 +18,17 @@ class UserRepository: BaseRepository() {
     fun getUser(id: Int): UserEntity? {
         return dataStore.get(id)
     }
+
+    fun searchUserList(user: User): List<UserEntity> {
+        return dataStore.search(user)
+    }
+}
+class TestDataStore : UserDataStore {
+    val testUser = UserEntity(1,"takaka","taro",9)
+    override fun get(id: Int): UserEntity? = testUser
+    override fun getList(): List<UserEntity> = mutableListOf(testUser)
+    override fun search(user: User): List<UserEntity> = mutableListOf(testUser)
+    override fun insert(user: User): Boolean = true
+    override fun update(id: Int, user: User): Boolean = true
+    override fun delete(id: Int): Boolean = true
 }
