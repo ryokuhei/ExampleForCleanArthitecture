@@ -29,7 +29,6 @@ class NextActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             id?.let {
-                Log.d("NextActivity-ID","${it.toString()}")
                 val nextFragment = NextFragment.createInstanse(it)
                 supportFragmentManager
                         .beginTransaction()

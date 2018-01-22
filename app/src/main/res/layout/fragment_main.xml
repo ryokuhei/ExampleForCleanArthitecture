@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,8 +13,7 @@
         android:layout_marginLeft="59dp"
         android:layout_marginTop="126dp"
         android:text="last name :"
-        android:textAlignment="viewEnd"
-    />
+        android:textAlignment="viewEnd" />
 
 
     <TextView
@@ -25,8 +24,7 @@
         android:layout_below="@id/firstName_textView"
         android:layout_marginTop="24dp"
         android:text="first name :"
-        android:textAlignment="viewEnd"
-      />
+        android:textAlignment="viewEnd" />
 
     <TextView
         android:id="@+id/age_textView"
@@ -43,8 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/firstName_textView"
-        android:layout_toRightOf="@id/firstName_textView"
         android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/firstName_textView"
         android:ems="10"
         android:hint="first name"
         android:inputType="textPersonName" />
@@ -53,9 +51,9 @@
         android:id="@+id/lastName_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/lastName_textView"
         android:layout_alignLeft="@id/firstName_editText"
         android:layout_below="@id/firstName_editText"
-        android:layout_alignBottom="@id/lastName_textView"
         android:layout_toRightOf="@id/lastName_editText"
         android:ems="10"
         android:hint="last name"
@@ -65,9 +63,9 @@
         android:id="@+id/age_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/age_textView"
         android:layout_alignLeft="@id/lastName_editText"
         android:layout_below="@id/lastName_editText"
-        android:layout_alignBottom="@id/age_textView"
         android:layout_toRightOf="@id/age_textView"
         android:ems="10"
         android:hint="age"

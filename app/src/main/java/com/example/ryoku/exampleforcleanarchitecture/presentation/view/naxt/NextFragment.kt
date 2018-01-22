@@ -66,9 +66,6 @@ class NextFragment: BaseFragment(), NextFragmentDelegate, View.OnClickListener {
         val bundle: Bundle = arguments
         id = bundle.getInt(USER_ID)
 
-        Log.d("id","${id.toString()}")
-
-
         var user: User?
         id?.let {
             presenter.delegate = this
@@ -76,8 +73,6 @@ class NextFragment: BaseFragment(), NextFragmentDelegate, View.OnClickListener {
             user = presenter.getUserData(it)
 
             val name = "${user?.firstName} ${user?.lastName}"
-            Log.d("firstName","${user?.firstName}")
-            Log.d("Name","${name}")
             nameTV.text=name
             ageTV.text=Integer.toString(user?.age!!) ?: ""
         }

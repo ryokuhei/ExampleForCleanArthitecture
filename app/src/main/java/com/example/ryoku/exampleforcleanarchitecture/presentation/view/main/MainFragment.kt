@@ -1,18 +1,21 @@
 package com.example.ryoku.exampleforcleanarchitecture.presentation.view.main
 
+import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import com.example.ryoku.exampleforcleanarchitecture.R
 import com.example.ryoku.exampleforcleanarchitecture.domain.model.User
 import com.example.ryoku.exampleforcleanarchitecture.presentation.presenter.MainPresenter
-import com.example.ryoku.exampleforcleanarchitecture.presentation.view.naxt.NextActivity
 
 /**
  * Created by ryoku on 2018/01/17.
@@ -53,25 +56,36 @@ class MainFragment: Fragment(), MainFragmentDelegate, View.OnClickListener {
         view?.findViewById<Button>(R.id.register_button).setOnClickListener(this)
     }
 
-    // createUser
-    override fun onClick(view: View?) {
-        Log.d("mainFragment","onClick")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
+        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
-        val firstName = firstNameET.text.toString()
-        val lastName = lastNameET.text.toString()
-        val age = ageET.text.toString().toInt()
-        val user = User(firstName,lastName, age)
-
-        Log.d("click id",view?.id.toString())
-        when(view?.id) {
-            R.id.register_button ->
-                this.presenter.register(user)
-            else ->
-                print("non_click")
-        }
+//        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        imm.hideSoftInputFromWindow(view?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
+    // createUser
+    override fun onClick(view: View?) {
+        when(view?.id) {
+            R.id.register_button -> {
+                val firstName = firstNameET.text.toString()
+                val lastName = lastNameET.text.toString()
+                val age = Integer.parseInt(ageET.text.toString())
+                val user = User(firstName,lastName, age)
+                this.presenter.register(user)
+            }
+            R.id.layout_rl -> {
+                Log.d("layout", "clicked")
+//                if(view != null) {
+//                    val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                    imm.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+//                    view.clearFocus()
+//                }
+            }
+            else -> print("non_click")
+        }
+    }
 
     // result create success
     override fun gotoNextActivity(id: Int) {
@@ -80,9 +94,12 @@ class MainFragment: Fragment(), MainFragmentDelegate, View.OnClickListener {
 
     // result create failure
     override fun showErrorMessage(message: String) {
-        Log.d("createUser","false: ${message}")
+        val alertDialog = AlertDialog.Builder(activity)
+        alertDialog.setTitle("Error")
+        alertDialog.setMessage(message)
+        alertDialog.create()
+        alertDialog.show()
     }
-
 }
 
 interface MainFragmentDelegate {

@@ -14,8 +14,8 @@ class GetUserIdUseCase: BaseUseCase() {
         val userRepository = UserRepository()
 
         val userEntityList = userRepository.searchUserList(searchWord)
-        userEntityList[0].let {
-           id = it.id
+        if(!userEntityList.isEmpty()) {
+           id = userEntityList[0].id
         }
 
         return id
